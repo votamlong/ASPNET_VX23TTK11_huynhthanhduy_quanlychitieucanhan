@@ -1,10 +1,5 @@
 <?php
-session_start();
 include 'config.php';
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
 $id = $_GET['id'];
 $stmt = $conn->prepare("SELECT * FROM expenses WHERE id = ?");
 $stmt->execute([$id]);
@@ -78,11 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <li class="nav-item"><a class="nav-link active" href="list.php">Danh Sách Chi Tiêu</a></li>
                     <li class="nav-item"><a class="nav-link" href="report.php">Báo Cáo</a></li>
                 </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="logout.php">Đăng Xuất</a>
-                    </li>
-                </ul>
+                <!-- Xóa nút Đăng Xuất -->
             </div>
         </div>
     </nav>

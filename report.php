@@ -1,4 +1,6 @@
-
+<?php
+include 'config.php';
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -43,11 +45,7 @@
                     <li class="nav-item"><a class="nav-link" href="list.php">Danh Sách Chi Tiêu</a></li>
                     <li class="nav-item"><a class="nav-link active" href="report.php">Báo Cáo</a></li>
                 </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="logout.php">Đăng Xuất</a>
-                    </li>
-                </ul>
+                <!-- Xóa nút Đăng Xuất -->
             </div>
         </div>
     </nav>

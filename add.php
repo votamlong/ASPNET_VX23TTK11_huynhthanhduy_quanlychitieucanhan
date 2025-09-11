@@ -1,21 +1,3 @@
-<?php
-session_start();
-include 'config.php';
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $date = $_POST['date'];
-    $category = $_POST['category'];
-    $amount = $_POST['amount'];
-    $description = $_POST['description'];
-    
-    $stmt = $conn->prepare("INSERT INTO expenses (date, category, amount, description) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$date, $category, $amount, $description]);
-    header("Location: list.php");
-}
-?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>

@@ -20,14 +20,12 @@ if ($environment === 'production') {
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    // Thiết lập charset để tránh lỗi mã hóa
-    $conn->exec("SET NAMES 'utf8'");
+    $conn->exec("SET NAMES 'utf8'"); // Hỗ trợ tiếng Việt
 } catch(PDOException $e) {
-    // Hiển thị lỗi chi tiết (chỉ dùng trong môi trường phát triển)
+    // Hiển thị lỗi chi tiết ở local, thông báo chung ở production
     if ($environment === 'local') {
         echo "Connection failed: " . $e->getMessage();
     } else {
-        // Trong production, không lộ lỗi chi tiết để bảo mật
         echo "Connection failed. Please contact the administrator.";
     }
 }

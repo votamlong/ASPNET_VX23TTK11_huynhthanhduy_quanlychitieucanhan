@@ -11,10 +11,11 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Báo Cáo Chi Tiêu</title>
+    <title>Quản Lý Chi Tiêu Cá Nhân</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
             background-color: #f4f7fa; 
             color: #333; 
         }
@@ -27,12 +28,26 @@ if (!isset($_SESSION['user_id'])) {
         .nav-link:hover { 
             color: #fd7e14 !important; 
         }
-        .table-responsive { 
+        .card { 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            border: none; 
+            background-color: #fff; 
         }
-        .table thead { 
+        .card-header { 
             background-color: #007bff; 
             color: #fff; 
+            font-weight: bold; 
+        }
+        .btn-primary { 
+            background-color: #fd7e14; 
+            border-color: #fd7e14; 
+        }
+        .btn-primary:hover { 
+            background-color: #e06c12; 
+            border-color: #e06c12; 
+        }
+        .container { 
+            max-width: 1200px; 
         }
     </style>
 </head>
@@ -45,10 +60,10 @@ if (!isset($_SESSION['user_id'])) {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Trang chính</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="index.php">Trang chính</a></li>
                     <li class="nav-item"><a class="nav-link" href="add.php">Thêm Chi Tiêu</a></li>
                     <li class="nav-item"><a class="nav-link" href="list.php">Danh Sách Chi Tiêu</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="report.php">Báo Cáo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="report.php">Báo Cáo</a></li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -59,42 +74,22 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </nav>
     <div class="container mt-4">
-        <h1 class="mb-4">Báo Cáo Chi Tiêu</h1>
-        <h3>Theo Danh Mục</h3>
-        <div class="table-responsive mb-4">
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr><th>Danh mục</th><th>Tổng tiền</th></tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $stmt = $conn->prepare("SELECT category, SUM(amount) AS total FROM expenses GROUP BY category");
-                    $stmt->execute();
-                    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($results as $row) {
-                        echo "<tr><td>{$row['category']}</td><td>" . number_format($row['total'], 0, ',', '.') . "</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-        <h3>Theo Tháng (Năm 2025)</h3>
-        <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr><th>Tháng</th><th>Tổng tiền</th></tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $stmt = $conn->prepare("SELECT MONTH(date) AS month, SUM(amount) AS total FROM expenses WHERE YEAR(date) = 2025 GROUP BY MONTH(date)");
-                    $stmt->execute();
-                    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($results as $row) {
-                        echo "<tr><td>Tháng {$row['month']}</td><td>" . number_format($row['total'], 0, ',', '.') . "</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+        <h1 class="mb-4">Dashboard</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Tổng Chi Tiêu</div>
+                    <div class="card-body">
+                        <?php
+                        $stmt = $conn->prepare("SELECT SUM(amount) AS total FROM expenses");
+                        $stmt->execute();
+                        $total = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+                        ?>
+                        <p class="display-6"><?php echo number_format($total, 0, ',', '.'); ?> VND</p>
+                        <a href="add.php" class="btn btn-primary">Thêm Chi Tiêu Mới</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
